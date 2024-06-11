@@ -1,0 +1,3 @@
+G:/projects/repos/TestGame/out/build/x64-debug/CMakeFiles/TestGame.dir
+G:/projects/repos/TestGame/out/build/x64-debug/CMakeFiles/edit_cache.dir
+G:/projects/repos/TestGame/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
