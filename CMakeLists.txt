@@ -7,10 +7,17 @@ project ("TestGame")
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES src/TestGame.cpp)
+set(SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/TestGame.cpp")
 
 # Add source to this project's executable.
 add_executable (${PROJECT_NAME} ${SOURCES})
+
+target_sources(${PROJECT_NAME} PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/Player.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/TileMap.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/Tile.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/Torch.cpp"
+		)
 
 if (MSVC AND WIN32 AND NOT MSVC_VERSION VERSION_LESS 142)
 
