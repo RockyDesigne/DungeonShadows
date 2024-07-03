@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "Tile.h"
 #include "Torch.h"
 
@@ -11,6 +13,7 @@ using namespace Raylib;
 
 #include <vector>
 #include <memory>
+#include <string>
 
 class TileMap
 {
@@ -26,21 +29,12 @@ public:
 	* A-Z - items
 	*/
 
-	constexpr static int map_width = 9;
-	constexpr static int map_height = 10;
+	int map_width{};
+	int map_height{};
 
-	char map[map_height][map_width] = {
-	"###..###",
-	"#x...###",
-	"#T##.###",
-	"####.###",
-	"####.###",
-	"####.###",
-	"####.###",
-	"####.###",
-	"####.###",
-	"####.###",
-	};
+	std::vector<std::string> m_map;
+
+	void load_map(const std::string& file_name);
 
 	TileMap(Vector2 tile_size, Vector2 torch_size);
 

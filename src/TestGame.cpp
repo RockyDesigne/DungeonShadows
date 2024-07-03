@@ -48,7 +48,7 @@ bool check_if_player_on_item(const std::shared_ptr<Tile> tile, const Player& pla
 
 bool within_map(Rectangle obj, float map_width, float map_height, float tile_size) {
 	// Calculate the total map size in pixels
-	float mapWidthInPixels = (map_width -1)* tile_size;
+	float mapWidthInPixels = (map_width)* tile_size;
 	float mapHeightInPixels = (map_height) * tile_size;
 
 	return (obj.x >= 0 && 
@@ -126,6 +126,8 @@ int main()
 
 	TileMap tile_map { {20.f,20.f}, {5.f,5.f} };
 
+	tile_map.load_map(R"(G:\projects\repos\TestGame\res\map.txt)");
+
 	tile_map.init();
 
 	Player player{{},{15.f,15.f},Raylib::RED};
@@ -143,6 +145,14 @@ int main()
 
 	while (!WindowShouldClose())
 	{
+
+		if (Raylib::IsKeyPressed(Raylib::KEY_F5))
+		{
+			tile_map.load_map(R"(G:\projects\repos\TestGame\res\map.txt)");
+			tile_map.init();
+			player.m_position = tile_map.get_player_position(player.m_size);
+		}
+
 		auto prev_pos = player.m_position;
 
 		player.handle_input();
