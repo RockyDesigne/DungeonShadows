@@ -14,19 +14,10 @@ void Torch::action()
 	throw std::exception("action method for Torch not implemented");
 }
 
+Raylib::Vector2 Torch::get_size()
+{ return m_size; }
+
 void Torch::draw()
 {
-	float scale = 1 / 4.f; // Scale factor for the item
-	Raylib::Vector2 top_left_tile_corner = Raylib::Vector2Scale(m_pos, m_size.x);
-
-	// Calculate the size of the item
-	Raylib::Vector2 small_square_size = Raylib::Vector2Scale(m_size, scale);
-
-	// oofset by half the size of the item
-	Raylib::Vector2 center_tile = {
-		top_left_tile_corner.x + (m_size.x - small_square_size.x) / 2.f,
-		top_left_tile_corner.y + (m_size.y - small_square_size.y) / 2.f
-	};
-
-	DrawRectangleV(center_tile, small_square_size, m_color);
+	DrawRectangleV(m_pos, m_size, m_color);
 }

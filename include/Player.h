@@ -23,7 +23,7 @@ public:
 
 	Raylib::Color m_color;
 
-	float m_speed = 0.2f;
+	float m_speed = 1.f;
 
 	std::vector<std::shared_ptr<IItem>> m_items;
 

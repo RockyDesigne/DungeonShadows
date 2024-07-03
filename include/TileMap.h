@@ -26,20 +26,30 @@ public:
 	* A-Z - items
 	*/
 
-	constexpr static int map_width = 5;
-	constexpr static int map_height = 5;
+	constexpr static int map_width = 9;
+	constexpr static int map_height = 10;
 
-	char map[map_width][map_height] = {
-	".##.",
-	"#x..",
-	".T##",
-	".###",
-	".###",
+	char map[map_height][map_width] = {
+	"###..###",
+	"#x...###",
+	"#T##.###",
+	"####.###",
+	"####.###",
+	"####.###",
+	"####.###",
+	"####.###",
+	"####.###",
+	"####.###",
 	};
+
+	TileMap(Vector2 tile_size, Vector2 torch_size);
+
+	Vector2 m_tile_size;
+	Vector2 m_torch_size;
 
 	std::vector<std::shared_ptr<Tile>> m_tiles;
 
-	Raylib::Vector2 get_player_position() const;
+	Raylib::Vector2 get_player_position(Vector2 player_size) const;
 
 	void init();
 

@@ -17,6 +17,8 @@ public:
 
 	Torch(const Raylib::Vector2 pos, const Raylib::Vector2 size, const Raylib::Color color);
 
+	Raylib::Vector2 get_size() override;
+
 	void action() override;
 
 	void draw() override;

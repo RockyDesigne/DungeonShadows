@@ -37,7 +37,7 @@ void Tile::remove_item()
 
 void Tile::draw()
 {
-	Raylib::DrawRectangleV({ m_position.x * m_size.x,m_position.y * m_size.y }, m_size, m_color);
+	Raylib::DrawRectangleV(m_position, m_size, m_color);
 	for (const auto& item : m_items)
 	{
 		item->draw();
