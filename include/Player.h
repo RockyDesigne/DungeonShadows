@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IItem.h"
+#include "Command.h"
+#include "GameActor.h"
+#include "Direction.h"
 
 namespace Raylib
 {
@@ -12,7 +15,7 @@ using namespace Raylib;
 #include <vector>
 #include <memory>
 
-class Player
+class Player : public GameActor
 {
 public:
 
@@ -27,7 +30,16 @@ public:
 
 	std::vector<std::shared_ptr<IItem>> m_items;
 
-	void draw_player();
+	void set_direction_left() override;
+	void set_direction_right() override;
+	void set_direction_up() override;
+	void set_direction_down() override;
 
-	void handle_input();
+	Direction get_direction() override;
+
+	void move() override;
+
+	void draw_player();
+private:
+	Direction m_direction;
 };
