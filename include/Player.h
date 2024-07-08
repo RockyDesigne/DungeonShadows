@@ -34,6 +34,15 @@ public:
 	void set_direction_right() override;
 	void set_direction_up() override;
 	void set_direction_down() override;
+	void toggle_selected_item() override;
+
+	//getters
+	Raylib::Vector2 get_position() override;
+	Raylib::Vector2 get_size() override;
+	Raylib::Color get_color() override;
+
+	std::shared_ptr<IItem> get_selected_item();
+	std::vector<Actions> m_actions;
 
 	Direction get_direction() override;
 
@@ -41,5 +50,6 @@ public:
 
 	void draw_player();
 private:
+	int m_selected_item = 0;
 	Direction m_direction;
 };

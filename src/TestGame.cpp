@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "TileMap.h"
 #include "InputHandler.h"
+#include "ActionHandler.h"
 
 namespace Raylib {
 #include <raylib.h>
@@ -137,7 +138,9 @@ int main()
 
 	SetTargetFPS(60); 
 
-	InputHandler input_handler{new MoveUpCommand, new MoveLeftCommand, new MoveDownCommand, new MoveRightCommand};
+	InputHandler input_handler{new MoveUpCommand, new MoveLeftCommand, new MoveDownCommand, new MoveRightCommand, new MouseLeftClickCommand};
+
+	ActionHandler action_handler;
 
 	Camera2D camera = { };
 	camera.target = { player.m_position };
@@ -163,6 +166,11 @@ int main()
 		if (command)
 		{
 			command->execute(player);
+		}
+
+		for (const auto& action : player.m_actions)
+		{
+			action_handler.handle_action(action, player);
 		}
 
 		if (!can_step(player, tile_map))

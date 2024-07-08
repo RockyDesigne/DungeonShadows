@@ -44,6 +44,16 @@ class MoveUpCommand : public Command
 	}
 };
 
+class MouseLeftClickCommand : public Command
+{
+	public:
+
+	void execute(GameActor& actor) override
+	{
+		actor.toggle_selected_item();
+	}
+};
+
 class MoveDownCommand : public Command
 {
 	public:

@@ -2,6 +2,7 @@
 
 #include "Wall.h"
 #include "Floor.h"
+#include "Sword.h"
 #include "Torch.h"
 
 TileMap::TileMap(Vector2 tile_size, Vector2 torch_size) :
@@ -78,15 +79,21 @@ void TileMap::init()
 						static_cast<float>(y) * m_tile_size.y},
 				                                    m_tile_size);
 
-				if (m_map[y][x] >= 65 && m_map[y][x] <= 90)
-				{
-
-					Raylib::Vector2 itemPosition = {
+				Raylib::Vector2 itemPosition = {
 						static_cast<float>(x) * m_tile_size.x + (m_tile_size.x - m_torch_size.x) / 2,
 						static_cast<float>(y) * m_tile_size.y + (m_tile_size.y - m_torch_size.y) / 2
-					};
+				};
 
-					tile->set_item(std::make_shared<Torch>(itemPosition,m_torch_size, Raylib::YELLOW));
+				switch (m_map[y][x])
+				{
+				case 'T':
+				{
+						tile->set_item(std::make_shared<Torch>(itemPosition, m_torch_size, Raylib::YELLOW));
+				} break;
+				case 'S':
+				{
+						tile->set_item(std::make_shared<Sword>(itemPosition, m_torch_size, Raylib::PINK));
+				}break;
 				}
 				m_tiles.push_back(tile);
 			}

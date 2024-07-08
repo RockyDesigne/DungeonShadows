@@ -9,9 +9,9 @@ Torch::Torch(const Raylib::Vector2 pos, const Raylib::Vector2 size, const Raylib
 	m_pos(pos), m_size(size), m_color(color)
 { }
 
-void Torch::action()
+Actions Torch::action()
 {
-	throw std::exception("action method for Torch not implemented");
+	return Actions::TORCH_TOGGLE;
 }
 
 Raylib::Vector2 Torch::get_size()

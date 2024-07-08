@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include <string>
+
 Player::Player(const Raylib::Vector2 pos, const Raylib::Vector2 size, const Raylib::Color color):
 	m_position(pos), m_size(size), m_color(color)
 {
@@ -8,6 +10,49 @@ Player::Player(const Raylib::Vector2 pos, const Raylib::Vector2 size, const Rayl
 void Player::set_direction_down()
 {
 	m_direction = Direction::DOWN;
+}
+
+std::shared_ptr<IItem> Player::get_selected_item()
+{
+	if (m_items.empty())
+	{
+		return nullptr;
+	}
+
+	if (m_selected_item < 0 || m_selected_item >= m_items.size())
+	{
+		std::string msg = "selected item index out of bounds: ";
+		msg += "selected item is: " + std::to_string(m_selected_item);
+		msg += " and the size of the items vector is: " + std::to_string(m_items.size());
+
+		throw std::exception(msg.data());
+	}
+
+	return m_items[m_selected_item];
+}
+
+void Player::toggle_selected_item()
+{
+	auto item = get_selected_item();
+	if (item)
+	{
+		m_actions.push_back(item->action());
+	}
+}
+
+Raylib::Vector2 Player::get_position()
+{
+	return m_position;
+}
+
+Raylib::Vector2 Player::get_size()
+{
+	return m_size;
+}
+
+Raylib::Color Player::get_color()
+{
+	return m_color;
 }
 
 void Player::set_direction_left()

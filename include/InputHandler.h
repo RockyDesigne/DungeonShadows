@@ -13,8 +13,12 @@ class InputHandler
 {
 public:
 
-	InputHandler(Command* button_w, Command* button_a, Command* button_s, Command* button_d)
-		: m_button_w(button_w), m_button_a(button_a), m_button_s(button_s), m_button_d(button_d)
+	InputHandler(Command* button_w, Command* button_a, Command* button_s, Command* button_d, Command* button_left_mouse)
+		: m_button_w(button_w),
+	m_button_a(button_a),
+	m_button_s(button_s),
+	m_button_d(button_d),
+	m_button_left_mouse(button_left_mouse)
 	{}
 
 	Command* handle_input()
@@ -36,6 +40,11 @@ public:
 			return m_button_d;
 		}
 
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+		{
+			return m_button_left_mouse;
+		}
+
 		return nullptr;
 	}
 private:
@@ -43,4 +52,5 @@ private:
 	Command* m_button_a;
 	Command* m_button_s;
 	Command* m_button_d;
+	Command* m_button_left_mouse;
 };

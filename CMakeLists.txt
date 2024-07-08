@@ -17,6 +17,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/TileMap.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/Tile.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/Torch.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/Sword.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/ActionHandler.cpp"
 		)
 
 if (MSVC AND WIN32 AND NOT MSVC_VERSION VERSION_LESS 142)
