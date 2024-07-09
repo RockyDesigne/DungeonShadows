@@ -4,6 +4,7 @@
 
 #include "Tile.h"
 #include "Torch.h"
+#include "TileType.h"
 
 namespace Raylib {
 #include <raylib.h>
@@ -43,9 +44,25 @@ public:
 
 	std::vector<std::shared_ptr<Tile>> m_tiles;
 
+	//gives player position in grid coords
 	Raylib::Vector2 get_player_position(Vector2 player_size) const;
 
 	void init();
 
 	void draw();
+
+	//tile position in grid coords
+	Raylib::Vector2 get_tile_pos_in_grid(const Raylib::Vector2 size, const Raylib::Vector2 pos) const;
+
+	//takes input position in grid coords
+	//returns true if the position is in the map
+	bool is_in_map(const Raylib::Vector2& pos) const;
+
+	//takes as input position in grid coords
+	//returns tile type
+	TileType get_tile_type(const Raylib::Vector2& pos) const;
+
+	//takes as input position in grid coords
+	//returns a reference to the object
+	std::shared_ptr<Tile> get_tile_object(const Raylib::Vector2& pos);
 };

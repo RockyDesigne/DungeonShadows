@@ -36,7 +36,7 @@ void Player::toggle_selected_item()
 	auto item = get_selected_item();
 	if (item)
 	{
-		m_actions.push_back(item->action());
+		m_actions.push(item->action());
 	}
 }
 

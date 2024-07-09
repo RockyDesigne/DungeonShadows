@@ -15,7 +15,6 @@ void ActionHandler::handle_action(Actions action, GameActor& actor)
 		} break;
 	default:
 		throw std::exception("Unhandled action!");
-		break;
 	}
 }
 

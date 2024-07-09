@@ -14,6 +14,7 @@ using namespace Raylib;
 
 #include <vector>
 #include <memory>
+#include <queue>
 
 class Player : public GameActor
 {
@@ -22,6 +23,7 @@ public:
 	Player(const Raylib::Vector2 pos, const Raylib::Vector2 size, const Raylib::Color color);
 
 	Raylib::Vector2 m_position;
+	Raylib::Vector2 m_tile_position;
 	Raylib::Vector2 m_size;
 
 	Raylib::Color m_color;
@@ -42,7 +44,7 @@ public:
 	Raylib::Color get_color() override;
 
 	std::shared_ptr<IItem> get_selected_item();
-	std::vector<Actions> m_actions;
+	std::queue<Actions> m_actions;
 
 	Direction get_direction() override;
 

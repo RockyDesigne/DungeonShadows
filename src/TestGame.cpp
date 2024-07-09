@@ -48,68 +48,61 @@ bool check_if_player_on_item(const std::shared_ptr<Tile> tile, const Player& pla
 	
 }
 
-bool within_map(Rectangle obj, float map_width, float map_height, float tile_size) {
-	// Calculate the total map size in pixels
-	float mapWidthInPixels = (map_width)* tile_size;
-	float mapHeightInPixels = (map_height) * tile_size;
-
-	return (obj.x >= 0 && 
-			obj.x + obj.width < mapWidthInPixels &&
-			obj.y >= 0 && 
-			obj.y + obj.height < mapHeightInPixels);
-	
-}
-
-bool is_player_on_wall(const Player& player, const std::shared_ptr<Tile> tile)
+bool can_step(GameActor& player, TileMap& tile_map)
 {
-	const Rectangle player_rec = {
-		player.m_position.x,
-		player.m_position.y,
-		player.m_size.x,
-		player.m_size.y
-	};
+	auto player_pos = player.get_position();
+	auto player_size = player.get_size();
+	auto player_rectangle = Rectangle{
+		player_pos.x,
+		player_pos.y,
+		player_size.x,
+		player_size.y };
 
-	const Rectangle tile_rec = {
-		tile->get_position().x,
-		tile->get_position().y,
-		tile->get_size().x,
-		tile->get_size().y
-	};
+	auto tile_pos = tile_map.get_tile_pos_in_grid(player_size, player_pos);
 
-	return CheckCollisionRecs(player_rec, tile_rec);
-}
-
-// Function to check if a position is within bounds and is a walkable tile
-
-bool is_same_color(const Color& c1, const Color& c2)
-{
-	return (c1.a == c2.a &&
-			c1.b == c2.b &&
-			c1.r == c2.r &&
-			c1.g == c2.g);
-}
-
-bool can_step(const Player& player, const TileMap& tile_map)
-{
-	Rectangle player_rec = {
-		player.m_position.x,
-		player.m_position.y,
-		player.m_size.x,
-		player.m_size.y
-	};
-
-	if (!within_map(player_rec, tile_map.map_width, tile_map.map_height, tile_map.m_tile_size.x))
+	if (!tile_map.is_in_map(tile_pos))
 	{
 		return false;
 	}
 
-	for (const auto& tile : tile_map.m_tiles)
+	//get the tiles adjacent to the player
+	for (int y = -1; y <= 1; y++)
 	{
-		if (is_same_color(tile->get_color(), Raylib::GRAY))
+		for (int x = -1; x <= 1; x++)
 		{
-			if (is_player_on_wall(player, tile))
+			Raylib::Vector2 new_tile_pos = { tile_pos.x + x, tile_pos.y + y };
+
+			Raylib::Rectangle tile_rect = {
+
+					new_tile_pos.x * tile_map.m_tile_size.x,
+					new_tile_pos.y * tile_map.m_tile_size.y,
+					tile_map.m_tile_size.x,
+					tile_map.m_tile_size.y
+			};
+
+			if (!tile_map.is_in_map(new_tile_pos))
 			{
-				return false;
+				if (Raylib::CheckCollisionRecs(
+					player_rectangle,
+					tile_rect)
+					)
+				{
+					return false;
+				}
+				continue;
+			}
+
+			auto tile = tile_map.get_tile_type({ tile_pos.x + x, tile_pos.y + y });
+
+			if (tile == TileType::WALL)
+			{
+				if (Raylib::CheckCollisionRecs(
+					player_rectangle,
+					tile_rect)
+					)
+				{
+					return false;
+				}
 			}
 		}
 	}
@@ -168,15 +161,35 @@ int main()
 			command->execute(player);
 		}
 
-		for (const auto& action : player.m_actions)
-		{
-			action_handler.handle_action(action, player);
-		}
-
 		if (!can_step(player, tile_map))
 		{
 			player.m_position = prev_pos;
 		}
+
+		auto tile = tile_map.get_tile_object(tile_map.get_tile_pos_in_grid(
+			player.m_size,
+			player.m_position));
+		if (check_if_player_on_item(tile, player))
+		{
+			auto item = tile->get_item();
+			if (item)
+			{
+				player.m_items.push_back(item);
+				tile->remove_item();
+			}
+		}
+
+		//TODO: Think about actions that are executed over several frames
+		if (!player.m_actions.empty()) {
+			action_handler.handle_action(player.m_actions.front(), player);
+			player.m_actions.pop();
+		}
+
+		auto player_tile = tile_map.get_tile_pos_in_grid(
+			player.m_size,
+			player.m_position);
+
+		printf("Player is on tile: x: %f, y: %f\n", player_tile.x, player_tile.y);
 
 		camera.target = { player.m_position }; //camera urmareste playerul
 
@@ -186,16 +199,6 @@ int main()
 		//limitam zoomul
 		if (camera.zoom > 3.0f) camera.zoom = 3.0f;
 		else if (camera.zoom < 0.1f) camera.zoom = 0.1f;
-
-		//pickup items
-		for (const auto& tile : tile_map.m_tiles)
-		{
-				if (check_if_player_on_item(tile, player))
-				{
-					player.m_items.push_back(tile->get_item());
-					tile->remove_item();
-				}
-		}
 
 		BeginDrawing(); //tot ce este intre astea doua se intampla de 60 de ori pe secunda
 			ClearBackground(Raylib::BLACK); //trb every frame
