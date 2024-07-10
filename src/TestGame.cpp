@@ -80,6 +80,7 @@ bool can_step(GameActor& player, TileMap& tile_map)
 					tile_map.m_tile_size.y
 			};
 
+			//TODO: Add concept of a void tile basically to make this prettier
 			if (!tile_map.is_in_map(new_tile_pos))
 			{
 				if (Raylib::CheckCollisionRecs(
@@ -179,12 +180,6 @@ int main()
 			}
 		}
 
-		//TODO: Think about actions that are executed over several frames
-		if (!player.m_actions.empty()) {
-			action_handler.handle_action(player.m_actions.front(), player);
-			player.m_actions.pop();
-		}
-
 		auto player_tile = tile_map.get_tile_pos_in_grid(
 			player.m_size,
 			player.m_position);
@@ -208,6 +203,13 @@ int main()
 				tile_map.draw();
 
 				player.draw_player();
+
+				//drawing player actions
+				//TODO: Think about actions that are executed over several frames
+				if (!player.m_actions.empty()) {
+					action_handler.handle_action(player.m_actions.front(), player);
+					player.m_actions.pop();
+				}
 
 			EndMode2D();
 

@@ -31,7 +31,7 @@ void ActionHandler::sword_slash(GameActor& actor)
     switch (actor.get_direction())
     {
     case Direction::UP:
-        sword_pos = { pos.x, pos.y + sword_size.y };
+        sword_pos = { pos.x + size.x/2 - sword_size.x/2, pos.y - sword_size.y };
         break;
     case Direction::DOWN:
         sword_pos = { pos.x + size.x / 2 - sword_size.x / 2, pos.y + size.y };
