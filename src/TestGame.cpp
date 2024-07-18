@@ -8,6 +8,7 @@
 #include "TileMap.h"
 #include "InputHandler.h"
 #include "ActionHandler.h"
+#include "Skeleton.h"
 
 namespace Raylib {
 #include <raylib.h>
@@ -19,8 +20,12 @@ using namespace Raylib; // ar fi chill sa il bagam intr-un namespace pt a evita 
 #include <vector>
 #include <memory>
 
+#include "Globals.h"
+
 constexpr int screenWidth = 800;
 constexpr int screenHeight = 800;
+
+#define DEBUG
 
 bool check_if_player_on_item(const std::shared_ptr<Tile> tile, const Player& player)
 {
@@ -111,6 +116,51 @@ bool can_step(GameActor& player, TileMap& tile_map)
 	return true;
 }
 
+bool operator==(const Vector2& lhs, const Vector2& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+void damage(GameActor& player, TileMap& tile_map)
+{
+	const float sword_reach = 1.0f;
+
+	auto direction = player.get_direction();
+	Vector2 player_pos = player.get_position();
+	Vector2 tile_hit_pos;
+
+	Vector2 hit_tile_pos;
+	Vector2 player_tile = tile_map.get_tile_pos_in_grid(player.get_size(), player.get_position());
+	switch (direction)
+	{
+	case Direction::UP:
+		{
+			hit_tile_pos = { player_tile.x, player_tile.y - sword_reach};
+		}break;
+	case Direction::DOWN:
+		{
+			hit_tile_pos = { player_tile.x, player_tile.y + sword_reach};
+		}break;
+
+	case Direction::LEFT:
+		{
+			hit_tile_pos = { player_tile.x - sword_reach, player_tile.y };
+		}break;
+	case Direction::RIGHT:
+		{
+			hit_tile_pos = { player_tile.x + sword_reach, player_tile.y };
+		}break;
+	}
+
+	for (const auto& enemy : enemies)
+	{
+		if (tile_map.get_tile_pos_in_grid(enemy->get_size(), enemy->get_position()) == player_tile)
+		{
+			enemy->receive_damage(player.get_damage());
+		}
+	}
+}
+
 int main()
 {
 	//functia asta trebuie apelata mereu la inceput
@@ -180,11 +230,27 @@ int main()
 			}
 		}
 
+		if (!player.m_actions.empty()) {
+			if (player.m_actions.front() == Actions::SWORD_ATTACK)
+			{
+				damage(player, tile_map);
+			}
+		}
+
+		for (const auto& enemy : enemies)
+		{
+			if (enemy->get_health() <= 0)
+			{
+				enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+			}
+		}
+
+#ifdef DEBUG
 		auto player_tile = tile_map.get_tile_pos_in_grid(
 			player.m_size,
 			player.m_position);
-
 		printf("Player is on tile: x: %f, y: %f\n", player_tile.x, player_tile.y);
+#endif //DEBUG
 
 		camera.target = { player.m_position }; //camera urmareste playerul
 
@@ -202,10 +268,15 @@ int main()
 
 				tile_map.draw();
 
-				player.draw_player();
+				player.draw();
 
-				//drawing player actions
-				//TODO: Think about actions that are executed over several frames
+				//draw enemies
+				for (const auto& enemy : enemies)
+				{
+					enemy->draw();
+				}
+
+				//draw animations
 				if (!player.m_actions.empty()) {
 					action_handler.handle_action(player.m_actions.front(), player);
 					player.m_actions.pop();

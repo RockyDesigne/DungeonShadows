@@ -2,6 +2,9 @@
 
 #include "Actions.h"
 #include "GameActor.h"
+#include "AnimationActions.h"
+
+#include <vector>
 
 class ActionHandler
 {

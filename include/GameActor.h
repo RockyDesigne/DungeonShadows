@@ -19,6 +19,10 @@ public:
 	virtual void set_direction_down() = 0;
 	virtual void toggle_selected_item() = 0;
 	virtual void move() = 0;
+	virtual void receive_damage(int damage) = 0;
+	virtual void draw() = 0;
+	virtual int get_health() = 0;
+	virtual int get_damage() = 0;
 	virtual Raylib::Vector2 get_position() = 0;
 	virtual Raylib::Vector2 get_size() = 0;
 	virtual Raylib::Color get_color() = 0;

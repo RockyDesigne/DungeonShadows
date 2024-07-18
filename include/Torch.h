@@ -25,6 +25,8 @@ public:
 
 	void draw() override;
 
+	int damage() override { return 0; }
+
 private:
 	Raylib::Vector2 m_pos;
 	Raylib::Vector2 m_size;

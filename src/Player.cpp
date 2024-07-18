@@ -40,6 +40,24 @@ void Player::toggle_selected_item()
 	}
 }
 
+void Player::receive_damage(int damage)
+{
+	if (health > 0)
+	{
+		health -= damage;
+	}
+}
+
+int Player::get_damage()
+{
+	return get_selected_item()->damage();
+}
+
+int Player::get_health()
+{
+	return health;
+}
+
 Raylib::Vector2 Player::get_position()
 {
 	return m_position;
@@ -94,7 +112,7 @@ void Player::move()
 	}
 }
 
-void Player::draw_player()
+void Player::draw()
 {
 	DrawRectangleV(m_position, m_size, m_color);
 }

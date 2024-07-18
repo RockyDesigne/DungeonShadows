@@ -18,9 +18,9 @@ void ActionHandler::handle_action(Actions action, GameActor& actor)
 	}
 }
 
-// TO DO, not working right
 void ActionHandler::sword_slash(GameActor& actor)
 {
+    //defaults
     auto default_sword_color = Raylib::PINK;
     Raylib::Vector2 sword_size = { 10, 10 };
 

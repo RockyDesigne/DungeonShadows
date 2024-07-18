@@ -4,6 +4,8 @@
 #include "Floor.h"
 #include "Sword.h"
 #include "Torch.h"
+#include "Globals.h"
+#include "Skeleton.h"
 
 TileMap::TileMap(Vector2 tile_size, Vector2 torch_size) :
 m_tile_size(tile_size), m_torch_size(torch_size)
@@ -94,6 +96,12 @@ void TileMap::init()
 				{
 						tile->set_item(std::make_shared<Sword>(itemPosition, m_torch_size, Raylib::PINK));
 				}break;
+
+				case 'K':
+				{
+					enemies.push_back(new Skeleton(itemPosition, {10.f,10.f}, Raylib::BLUE));
+				}break;
+
 				}
 				m_tiles.push_back(tile);
 			}

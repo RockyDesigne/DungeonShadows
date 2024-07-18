@@ -19,6 +19,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/Torch.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/Sword.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/ActionHandler.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/Skeleton.cpp"
 		)
 
 if (MSVC AND WIN32 AND NOT MSVC_VERSION VERSION_LESS 142)

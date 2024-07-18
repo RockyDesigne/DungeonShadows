@@ -19,6 +19,7 @@ public:
 	Raylib::Vector2 get_size() override;
 	Actions action() override;
 	void draw() override;
+	int damage() override { return 10;}
 private:
 	Raylib::Vector2 m_pos;
 	Raylib::Vector2 m_size;
