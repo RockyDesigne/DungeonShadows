@@ -35,13 +35,11 @@ bool check_if_player_on_item(const std::shared_ptr<Tile> tile, const Player& pla
 		return false;
 	}
 
-	// Use the actual item size for the bounding box
 	Vector2 item_pos = item->get_position();
-	Vector2 item_size = item->get_size(); // Assuming get_size() is implemented
+	Vector2 item_size = item->get_size();
 
 	Rectangle item_rec = { item_pos.x, item_pos.y, item_size.x, item_size.y };
 
-	// Adjust player's bounding box to be centered
 	Rectangle player_rec = {
 		player.m_position.x,
 		player.m_position.y,

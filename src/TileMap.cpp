@@ -39,7 +39,7 @@ void TileMap::load_map(const std::string& file_name)
 Raylib::Vector2 TileMap::get_player_position(Vector2 player_size) const
 {
 	Raylib::Vector2 player_pos = {};
-	// Assuming a tile size of 20x20 as per your init method
+
 	const float tileSize = 20.0f;
 
 	for (int y = 0; y < map_height; y++)
